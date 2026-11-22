@@ -1,6 +1,6 @@
 # IPTV Player für LG webOS
 
-Eigener IPTV-Player für gerootete LG-Fernseher mit webOS 4.x (entwickelt für 75UK6200PLB, Firmware 05.50.70).
+Eigener IPTV-Player für LG-Fernseher mit webOS 4.x (entwickelt und getestet auf einem gerooteten 75UK6200PLB, Firmware 05.50.70; ohne Root siehe „Ohne Root“).
 M3U-Playlisten und XMLTV-Programmführer werden über eine **Weboberfläche** eingerichtet und **lokal auf dem Fernseher** gespeichert.
 
 ## Installieren
@@ -14,6 +14,19 @@ ares-install --device tv dist/org.iptvplayer.app_1.3.0_all.ipk
 ```
 
 Danach erscheint **IPTV Player** im Launcher. Er läuft neben dem SMB Player (anderer Port: 8766).
+
+### Ohne Root (Entwicklermodus) – ungetestet
+
+Root ist voraussichtlich **nicht nötig**. Die App und der Node-Dienst brauchen keine Root-Rechte (der Dienst läuft auch auf dem Testgerät als normaler App-Benutzer). Auf einem nicht gerooteten TV sollte die Installation über den **Entwicklermodus** gehen:
+
+1. Auf dem TV die LG-App „Developer Mode“ installieren, Entwicklermodus einschalten und den Fernseher neu starten.
+2. Am PC das Gerät einrichten (`ares-setup-device`, Passphrase aus der Developer-Mode-App) und die IPK mit `ares-install --device tv …` installieren (siehe oben).
+
+Bekannte Einschränkungen und offene Punkte:
+
+- **Kein Autostart:** Das Skript `service/autostart.sh` braucht Root. Ohne Root ist die Einrichtungsseite nur erreichbar, solange die App geöffnet ist.
+- **Sitzung des Entwicklermodus:** Er läuft nach LGs Vorgabe zeitlich begrenzt (ca. 50 Stunden) und muss in der Developer-Mode-App verlängert werden.
+- **Ungetestet:** Ob webOS dem Dienst ohne Root alles erlaubt (eigener Port 8766, Netzwerkzugriff), ist nicht geprüft. Erfahrungsberichte (Issues) sind willkommen.
 
 ## Einrichten
 
