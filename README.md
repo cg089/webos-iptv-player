@@ -3,6 +3,21 @@
 Eigener IPTV-Player für LG-Fernseher mit webOS 4.x (entwickelt und getestet auf einem gerooteten 75UK6200PLB, Firmware 05.50.70; ohne Root siehe „Ohne Root“).
 M3U-Playlisten und XMLTV-Programmführer werden über eine **Weboberfläche** eingerichtet und **lokal auf dem Fernseher** gespeichert.
 
+## Screenshots
+
+Die Bilder zeigen die App im Desktop-Browser (1920×1080) mit einem simulierten Anbieter (`test/dev-upstream.js`): erfundene Sender und Sendungen, Farbverlauf statt Livebild. Auf dem TV sieht es entsprechend aus, nur mit deinen Sendern.
+
+| | |
+|---|---|
+| ![Startseite](docs/screenshots/01-start.png) | ![Senderliste mit Fortschrittsbalken und Infos zur Sendung](docs/screenshots/02-senderliste.png) |
+| Startseite: Favoriten, Zuletzt gesehen, Gruppen | Senderliste: Fortschrittsbalken, laufende Sendung, rechts Details und Folgesendungen |
+| ![Wiedergabe mit Einblendung](docs/screenshots/03-wiedergabe-osd.png) | ![Senderliste während der Wiedergabe (OK-Taste)](docs/screenshots/04-overlay.png) |
+| Wiedergabe mit Einblendung beim Umschalten | Senderliste als Overlay (OK während der Wiedergabe) |
+
+Einrichtung im Browser (`http://<TV-IP>:8766/`):
+
+![Weboberfläche zur Einrichtung](docs/screenshots/05-einrichtung.png)
+
 ## Installieren
 
 Fertige IPK: `dist/org.iptvplayer.app_1.3.0_all.ipk` (neu bauen: `bash tools/build.sh`, braucht Node.js und `@webos-tools/cli`).
