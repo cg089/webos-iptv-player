@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IPTV Player – Einrichtung</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>IPTV Player</h1>
+  <p class="sub">Einrichtung der Playlisten für den Fernseher</p>
+</header>
+
+<main>
+  <section class="card" id="infoCard">
+    <h2>Status</h2>
+    <dl id="info"><dt>Lade …</dt><dd></dd></dl>
+  </section>
+
+  <section class="card">
+    <div class="row-head">
+      <h2>Playlisten</h2>
+      <div class="actions">
+        <button id="btnRefreshAll">Alle aktualisieren</button>
+        <button id="btnNew" class="primary">+ Playlist hinzufügen</button>
+      </div>
+    </div>
+    <p id="emptyHint" class="hint" hidden>Noch keine Playlist eingerichtet. Mit „Playlist hinzufügen“ geht es los.</p>
+    <ul id="plList" class="items"></ul>
+  </section>
+
+  <section class="card" id="formCard" hidden>
+    <h2 id="formTitle">Playlist hinzufügen</h2>
+    <form id="form" autocomplete="off">
+      <input type="hidden" id="f_id">
+      <label>Anzeigename
+        <input id="f_name" placeholder="z. B. Mein Anbieter" maxlength="80">
+      </label>
+      <label>Quelle
+        <select id="f_type">
+          <option value="url">Adresse (URL) einer M3U-Playlist</option>
+          <option value="file">Datei von diesem Gerät hochladen</option>
+          <option value="enigma2">Enigma2-Receiver (VU+, Dreambox): Sender und Bouquets direkt von der Box</option>
+        </select>
+      </label>
+      <label id="rowUrl"><span id="urlLabel">Adresse der Playlist *</span>
+        <input id="f_url" type="url" placeholder="http://anbieter.example/get.php?username=…&amp;password=…&amp;type=m3u_plus" spellcheck="false">
+      </label>
+      <div id="rowE2" hidden>
+        <p class="hint">Die Bouquets der Box erscheinen als Gruppen, Reihenfolge und Namen wie am Receiver. Picons und Programmführer kommen ebenfalls von der Box. Nicht gewünschte Bouquets lassen sich nach dem Speichern über „Gruppen“ ausblenden.</p>
+        <div class="grid2">
+          <label>Streaming-Port
+            <input id="f_e2port" type="number" min="1" max="65535" placeholder="8001">
+          </label>
+        </div>
+        <label class="check"><input type="checkbox" id="f_e2auth"> Benutzername und Passwort auch für die Streams verwenden (nur nötig, wenn die Box das Streaming schützt)</label>
+      </div>
+      <label id="rowFile" hidden>M3U-Datei *
+        <input id="f_file" type="file" accept=".m3u,.m3u8,.txt,audio/x-mpegurl,application/vnd.apple.mpegurl">
+      </label>
+      <p class="hint" id="fileHint" hidden></p>
+      <label id="rowUa">User-Agent (optional)
+        <input id="f_ua" placeholder="leer = VLC/3.0.20 LibVLC/3.0.20" maxlength="300">
+      </label>
+      <label id="rowOwif">OpenWebif-Adresse für Enigma2-Receiver (optional)
+        <input id="f_owif" placeholder="leer = automatisch (http://Adresse-der-Box); mit Anmeldung: http://root:passwort@192.168.1.5" spellcheck="false" maxlength="300">
+      </label>
+      <label class="check" id="rowOwifOff"><input type="checkbox" id="f_owifoff"> Enigma2-Erkennung abschalten (keine Picons und kein EPG von der Box)</label>
+      <label class="check" id="rowProxy"><input type="checkbox" id="f_proxy"> Streams immer über den TV-Dienst leiten (nötig, wenn der Anbieter den Player nicht direkt zulässt)</label>
+      <label class="check" id="rowInsecure"><input type="checkbox" id="f_insecure"> Zertifikate nicht prüfen (unsicher; nur wenn https-Adressen sonst wegen eines Zertifikatfehlers scheitern)</label>
+      <div id="result" class="result" hidden></div>
+      <div class="buttons">
+        <button type="button" id="btnTest">Quelle testen</button>
+        <button type="submit" class="primary" id="btnSave">Speichern</button>
+        <button type="button" id="btnCancel" class="ghost">Abbrechen</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="card" id="groupCard" hidden>
+    <h2 id="groupTitle">Gruppen</h2>
+    <p class="hint">Haken entfernen = Gruppe auf dem Fernseher ausblenden.</p>
+    <input id="g_filter" type="search" placeholder="Gruppen filtern …">
+    <div class="buttons tight">
+      <button type="button" id="gAll">Alle einblenden</button>
+      <button type="button" id="gNone">Alle ausblenden</button>
+      <button type="button" id="gFiltered">Nur gefilterte einblenden</button>
+    </div>
+    <ul id="groupList" class="checks"></ul>
+    <div id="groupResult" class="result" hidden></div>
+    <div class="buttons">
+      <button type="button" id="gSave" class="primary">Speichern</button>
+      <button type="button" id="gClose" class="ghost">Schließen</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Einstellungen</h2>
+    <label>Programmführer (EPG, XMLTV-Adressen)
+      <textarea id="s_epg" rows="2" placeholder="leer = Adresse aus der Playlist (url-tvg) verwenden" spellcheck="false"></textarea>
+    </label>
+    <p class="hint" id="epgStatus"></p>
+    <div class="grid2">
+      <label>Aktualisierung (Stunden)
+        <input id="s_hours" type="number" min="1" max="168">
+      </label>
+      <label>Streams über den TV-Dienst leiten
+        <select id="s_proxy">
+          <option value="auto">Automatisch (nur wenn nötig)</option>
+          <option value="always">Immer</option>
+          <option value="never">Nie</option>
+        </select>
+      </label>
+    </div>
+    <label>Puffer (Stream-Cache im TV-Dienst)
+      <select id="s_buffer">
+        <option value="0">Aus (Stream direkt abspielen)</option>
+        <option value="4">Klein – 4 MB</option>
+        <option value="12">Mittel – 12 MB</option>
+        <option value="32">Groß – 32 MB</option>
+      </select>
+    </label>
+    <p class="hint">Mit Puffer laufen alle Sender über den TV-Dienst: Er lädt vor dem Start einige Sekunden vor und gleicht danach Netzwerk-Aussetzer aus (hilft bei Bildfehlern und „verwaschenem“ Bild). Der Sender startet dadurch 1–4 Sekunden später.</p>
+    <label class="check"><input type="checkbox" id="s_autoplay"> Beim Start der App den zuletzt gesehenen Sender abspielen</label>
+    <label class="check"><input type="checkbox" id="s_logos"> Senderlogos in der Liste anzeigen</label>
+    <div id="settingsResult" class="result" hidden></div>
+    <div class="buttons">
+      <button id="btnSettings" class="primary">Speichern</button>
+      <button id="btnEpg">EPG jetzt laden</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Zugriffsschutz</h2>
+    <p class="hint">Optional: Passwort für diese Einrichtungsseite und den Stream-Proxy von anderen Geräten im Netzwerk. Der Fernseher selbst braucht es nicht. Benutzername im Browser-Dialog: beliebig.</p>
+    <div class="grid2 end">
+      <label>Neues Passwort
+        <input id="a_pw" type="password" autocomplete="new-password" placeholder="leer = Schutz aus">
+      </label>
+      <div class="inline-btn"><button id="btnAdmin">Übernehmen</button></div>
+    </div>
+    <div id="adminResult" class="result" hidden></div>
+  </section>
+
+  <section class="card small">
+    <h2>Hinweise</h2>
+    <ul class="notes">
+      <li>Unterstützt werden M3U/M3U8-Playlisten (auch aus Xtream-Codes-Anbietern: <code>get.php?…&amp;type=m3u_plus</code>) und XMLTV-Programmführer, auch gzip-gepackt.</li>
+      <li>Adressen mit Benutzername und Passwort stehen im Klartext in der Konfigurationsdatei auf dem Fernseher. Ohne Zugriffsschutz kann jedes Gerät im Heimnetz diese Seite öffnen.</li>
+      <li>Der Fernseher spielt Streams selbst ab (HLS und MPEG-TS laufen am zuverlässigsten). Geht ein Sender nicht, hilft meist die Option „über den TV-Dienst leiten“.</li>
+      <li>Wiedergabe erfolgt nur für Inhalte, zu deren Nutzung du berechtigt bist.</li>
+    </ul>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

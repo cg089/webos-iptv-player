@@ -1,0 +1,8 @@
+{
+  "name": "org.iptvplayer.app.service",
+  "version": "1.3.0",
+  "description": "IPTV Player Service: M3U-Playlisten, Programmfuehrer und Stream-Proxy fuer die TV-App",
+  "main": "service.js",
+  "private": true,
+  "license": "MIT"
+}

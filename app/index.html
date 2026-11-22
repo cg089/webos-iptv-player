@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>IPTV Player</title>
+<meta name="viewport" content="width=1920, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- Laden -->
+<div id="screenLoading" class="screen center">
+  <div class="spinner"></div>
+  <p id="loadingText">Starte …</p>
+</div>
+
+<!-- Meldung (Fehler / noch keine Playlist) -->
+<div id="screenMessage" class="screen center" hidden>
+  <h1 id="msgTitle"></h1>
+  <p id="msgText"></p>
+  <p id="msgHint" class="hint"></p>
+  <p class="keyhint"><span class="key">OK</span> Erneut versuchen &nbsp;&nbsp; <span class="key">Zurück</span> Schließen</p>
+</div>
+
+<!-- Gruppen- und Senderlisten -->
+<div id="screenBrowse" class="screen" hidden>
+  <div id="head">
+    <h1 id="title">IPTV Player</h1>
+    <div id="crumb"></div>
+    <div id="clock"></div>
+  </div>
+  <ul id="list" class="vlist"></ul>
+  <div id="side" class="side" hidden>
+    <div class="sideTop">
+      <div class="sideLogoBox"><img class="sideLogo" alt=""></div>
+      <div class="sideTimes"><div class="sideStart"></div><div class="sideEnd"></div><div class="sideLeft"></div></div>
+    </div>
+    <div class="sideChan"></div>
+    <div class="sideTitle"></div>
+    <div class="sideDesc"></div>
+    <div class="sideNext"></div>
+  </div>
+  <div id="empty" hidden></div>
+  <div id="foot"></div>
+</div>
+
+<!-- Suche -->
+<div id="screenSearch" class="screen center" hidden>
+  <h1>Sender suchen</h1>
+  <input id="q" type="text" autocomplete="off" placeholder="Name oder Gruppe eingeben">
+  <p class="keyhint"><span class="key">OK</span> Suchen &nbsp;&nbsp; <span class="key">Zurück</span> Abbrechen</p>
+</div>
+
+<!-- Player -->
+<div id="screenPlayer" class="screen" hidden>
+  <video id="video"></video>
+  <div id="buffering" hidden><div class="spinner"></div></div>
+  <div id="noSignal" hidden><h1>Kein Signal</h1><p id="noSignalText"></p><p class="keyhint"><span class="key">Gelb</span> Neu verbinden &nbsp; <span class="key">CH</span> Sender wechseln &nbsp; <span class="key">Zurück</span> Liste</p></div>
+
+  <div id="osd" hidden>
+    <div class="osdRow">
+      <span id="osdNum"></span>
+      <span id="osdName"></span>
+      <span id="osdClock"></span>
+    </div>
+    <div id="osdGroup"></div>
+    <div id="osdNow"></div>
+    <div class="bar"><div id="osdFill"></div></div>
+    <div id="osdNext"></div>
+    <div id="osdDesc"></div>
+  </div>
+
+  <div id="chanPanel" class="vu" hidden>
+    <div id="chanHead">Senderliste</div>
+    <ul id="chanList" class="vlist cols"></ul>
+    <div id="chanSide" class="side">
+    <div class="sideTop">
+      <div class="sideLogoBox"><img class="sideLogo" alt=""></div>
+      <div class="sideTimes"><div class="sideStart"></div><div class="sideEnd"></div><div class="sideLeft"></div></div>
+    </div>
+    <div class="sideChan"></div>
+    <div class="sideTitle"></div>
+    <div class="sideDesc"></div>
+    <div class="sideNext"></div>
+    </div>
+    <div id="chanFoot">OK Umschalten &nbsp;·&nbsp; Rot Favorit &nbsp;·&nbsp; Zurück Schließen</div>
+  </div>
+
+  <div id="numInput" hidden></div>
+  <div id="toast" hidden></div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

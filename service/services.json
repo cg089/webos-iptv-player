@@ -1,0 +1,9 @@
+{
+  "id": "org.iptvplayer.app.service",
+  "description": "IPTV Player Service",
+  "services": [
+    {
+      "name": "org.iptvplayer.app.service"
+    }
+  ]
+}
